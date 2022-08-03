@@ -1,0 +1,26 @@
+GLFW error:
+
+[xcb] Extra reply data still left in queue
+[xcb] This is most likely caused by a broken X extension library
+[xcb] Aborting, sorry about that.
+main: ../../src/xcb_io.c:580: _XReply: Assertion `!xcb_xlib_extra_reply_data_left' failed.
+Aborted (core dumped)
+
+Fixed: window->poll_events() (glfwPollEvents) must be called after window->update() (glfwSwapBuffers) 
+
+
+
+GLFW error:
+
+X connection to `X� broken (explicit kill or server shutdown).
+
+Fixed: comment out window->set_viewport() (glViewport)
+
+
+
+GLFW error:
+
+Segmentation fault (core dumped)
+
+Fixed: change dokun::Window pointer from smart pointer to `dokun::Window window;`
+    Basically, any kind or pointers (either raw or smart) will trigger this error.
