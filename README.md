@@ -6,7 +6,8 @@ sudo apt install build-essential cmake git libx11-dev libgl1-mesa-dev libglu1-me
 ```
 
 
-# Build dokun-ui (library)
+# Build dokun-ui
+**To build dokun-ui as a library (libdokun):**
 ```bash
 git clone https://github.com/sidtheprince/dokun-ui.git
 cd dokun-ui
@@ -16,18 +17,18 @@ cmake ..
 make
 ```
 
-To Build the dokun-ui [Lua](https://www.lua.org/) interpreter:
+**To build the dokun-ui [Lua](https://www.lua.org/) interpreter:**
 ```bash
 cmake -DDOKUN_BUILD_LUA_CONSOLE=1 ..
 ```
 
-To disable building tests:
+**To disable building the tests:**
 ```bash
 cmake -DDOKUN_BUILD_TESTS=0 ..
 ```
 
 # Using dokun-ui in your C++ project(s)
-```bash
+```cpp
 #include <dokun_ui.hpp>
 //using namespace dokun;
 ```
