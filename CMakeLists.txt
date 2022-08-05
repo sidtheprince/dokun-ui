@@ -71,7 +71,7 @@ add_definitions(-DLUA_USE_POSIX  )
 endif()
 
 #############
-# window + screen
+# windowing system
 set(win32_src)
 set(x11_src     libX11.a libxcb.a libXau.a libXdmcp.a)
 set(wayland_src libwayland-client.so libwayland-server.so libwayland-cursor.so libwayland-egl.so libEGL.so)
