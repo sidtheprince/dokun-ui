@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.7 FATAL_ERROR) # 3.7 comes with support for Vulkan
 project(test)
 
 option(DOKUN_USE_GLFW "Build dokun-ui with GLFW" ON)
@@ -57,6 +57,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	    target_link_libraries(${test_main} ${X11_LIBRARIES})
     endif()
 endif()
+
 set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
 if(OPENGL_FOUND)
@@ -66,7 +67,8 @@ if(DOKUN_USE_OPENGL) # -DDOKUN_USE_OPENGL=1
 	target_link_libraries(${test_main} ${OPENGL_LIBRARIES})
 endif()
 endif()
-find_package(Vulkan) # optional - requires cmake version 3.7
+
+find_package(Vulkan) # optional
 if(Vulkan_FOUND)
 if(DOKUN_USE_VULKAN) # -DDOKUN_USE_VULKAN=1
 	message(STATUS "Using Vulkan: ${Vulkan_LIBRARIES}")# at ${Vulkan_INCLUDE_DIRS} (v${Vulkan_VERSION})") # Vulkan_VERSION requires cmake version 3.23
@@ -74,6 +76,7 @@ if(DOKUN_USE_VULKAN) # -DDOKUN_USE_VULKAN=1
 	target_link_libraries(${test_main} ${Vulkan_LIBRARIES})
 endif()
 endif()
+
 find_package(GLFW3)# REQUIRED)
 if(GLFW3_FOUND)
 if(DOKUN_USE_GLFW) # -DDOKUN_USE_GLFW=1

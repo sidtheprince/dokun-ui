@@ -47,16 +47,16 @@ int main() {
     window.create("Test", 1280, 720, 0);
     window.show();
     
-    dokun::Label * label = new dokun::Label();//("Hello World"); // causes Segfault when allocating via stack
+    dokun::Label * label = new dokun::Label("Hello World"); // causes Segfault when allocating via stack
     label->set_position(10, 10);
-    
+
 	while(window.is_open())
 	{
         window.set_viewport(window.get_client_width(), window.get_client_height()); // causes "X connection to ? broken (explicit kill or server shutdown)." error
         window.clear(32, 32, 32);	    
 	
 	    // Draw here ...
-	    label->draw(); // Not showing for some reason
+	    label->draw();
 	
 		window.update();      
 		window.poll_events();
@@ -65,7 +65,9 @@ int main() {
 	
 	window.destroy();
 	
+	#ifdef DOKUN_USE_GLFW
 	glfwTerminate();//dokun::Engine::close();
+	#endif
 	
     return 0;
 }
