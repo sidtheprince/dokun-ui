@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.7) # Modern CMake starts from version 3.0 onwards (3.7 comes with Vulkan support)
 project(dokun_ui)
 
+set(CMAKE_CXX_STANDARD 11) # supported in cmake version 3.1 and higher
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "0")
 set(VERSION_PATCH "0")
@@ -19,6 +22,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 #############
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+   #include_directories(/usr/include             )
+   #link_directories   (/usr/lib/x86_64-linux-gnu)
 # Set compiler-specific flags
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     #set(CMAKE_C_COMPILER   /usr/bin/clang  )
@@ -31,19 +36,6 @@ else()
     #set(CMAKE_CXX_COMPILER /usr/bin/g++)    
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie") # detach
 endif()
-endif()
-#############
-# use C++ 11 (REQUIRED)
-if(CMAKE_VERSION VERSION_LESS "3.1")
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "-std=gnu++11") # 98, 11, 14, 17, 20
-endif()
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "-std=c++11"  )
-endif()
-else()
-    set(CMAKE_CXX_STANDARD 11) # supported in cmake version 3.1 and higher
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 #############
 # scripting
@@ -77,19 +69,7 @@ endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 add_definitions(-DLUA_USE_POSIX  )
 endif()
-#############
-# GPU
-if(WIN32)
-    set(opengl_src opengl32.lib glu32.lib)
-    set(vulkan_src vulkan-1.lib)
-    set(Vulkan_LIBRARY C:/Windows/SysWOW64/vulkan-1.dll) # 64-bit Windows
-    set(Vulkan_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/vulkan)
-endif()
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(opengl_src libGL.so libGLU.so)
-    set(OpenGL_GL_PREFERENCE "LEGACY") # LEGACY(libGL.so) OR GLVND(libOpenGL.so and libGLX.so)
-    set(vulkan_src libvulkan.so      )
-endif()
+
 #############
 # window + screen
 set(win32_src)
@@ -111,7 +91,6 @@ endif()
 #############
 # extension
 set(glew_src  external/glew/src/glew.c) # glew-2.1.0 (this version adds support for OpenGL 4.6) (http://glew.sourceforge.net/)
-set(posix_src libpthread.so libdl.so)
 set(zlib_src  external/zlib/adler32.c external/zlib/crc32.c external/zlib/deflate.c external/zlib/inflate.c external/zlib/compress.c external/zlib/gzclose.c external/zlib/gzlib.c external/zlib/gzread.c external/zlib/gzwrite.c external/zlib/infback.c external/zlib/inffast.c external/zlib/inftrees.c external/zlib/trees.c external/zlib/uncompr.c external/zlib/zutil.c) # required for libpng
 #############
 # image
@@ -176,11 +155,6 @@ endif()
 #############
 # unicode
 set(icu_src)
-#############
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-   include_directories(/usr/include             )
-   link_directories   (/usr/lib/x86_64-linux-gnu)
-endif()
 #############
 # include_dir (.h and .hpp)
 if(DOKUN_LUA51)
@@ -273,9 +247,11 @@ set_target_properties(${libdokun_ui_target} PROPERTIES PREFIX "") # remove extra
 #############
 # Windows
 if(WIN32)
+if(DOKUN_BUILD_LUA_CONSOLE)
 #[[if(DOKUN_USE_OPENAL) # -DDOKUN_USE_OPENAL=1
     target_link_libraries(${dokun_ui_console_target} ${openal_src})
 endif()]]
+endif()
 endif()
 # GNU Linux
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
@@ -326,7 +302,7 @@ endif()
 endif()
 endif()
 # GLFW3
-find_package(GLFW3)# REQUIRED)
+find_package(GLFW3 REQUIRED)
 if(GLFW3_FOUND)
 if(DOKUN_USE_GLFW)
     message(STATUS "Using GLFW3: ${GLFW3_LIBRARY}")
@@ -337,29 +313,7 @@ if(DOKUN_BUILD_LUA_CONSOLE)
 endif()
 endif()
 endif()
-#############
-# GLFW
-#[[if(DOKUN_USE_GLFW)
-    message(STATUS "Using GLFW for window creation")
-    target_compile_definitions(${libdokun_ui_target} PUBLIC DOKUN_USE_GLFW)#add_definitions(-DDOKUN_USE_GLFW) # applies to all targets and not only a single target
-    target_compile_definitions(${dokun_ui_console_target} PRIVATE DOKUN_USE_GLFW)
-    
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    add_definitions(-D_GLFW_X11)
 
-if(DOKUN_USE_OPENGL)
-    add_definitions(-D_GLFW_GLX)
-    add_definitions(-D_GLFW_USE_OPENGL)
-endif()
-
-endif()
-
-    list(APPEND dokun_ui_src ${glfw_src})# src/window_glfw.cpp)
-endif()
-]]
-# mkdir build && cd build
-# cmake -DDOKUN_BUILD_LUA_CONSOLE=1 ..
-# cmake -G"Unix Makefiles" -DDOKUN_BUILD_LUA_CONSOLE=1 -DDOKUN_BUILD_TESTS=1
 #############
 #[[ 
 if(MACOSX)
@@ -370,3 +324,6 @@ if(ANDROID)
 endif(ANDROID)
 ]]
 #############
+# mkdir build && cd build
+# cmake -DDOKUN_BUILD_LUA_CONSOLE=1 .. # or cmake -G"Unix Makefiles" -DDOKUN_BUILD_LUA_CONSOLE=1 -DDOKUN_BUILD_TESTS=0
+# make

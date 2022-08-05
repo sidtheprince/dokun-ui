@@ -8,77 +8,77 @@ Component::Component() : number(-1), boolean_(-1), pointer(nullptr), vector(-1, 
 	set_type(DOKUN_COMPONENT_NONE);
 }
 ////////////
-Component::Component(const std::string& name) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name) : Component()
 {
 	Factory::get_component_factory()->store(this);	
 	set_name(name);
 	set_type(DOKUN_COMPONENT_NONE);
 }
 ////////////
-Component::Component(const std::string& name, int value, bool boolean_) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, int value, bool boolean_) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value, boolean_);
 }
 ////////////
-Component::Component(const std::string& name, double value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, double value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);
 }
 ////////////
-Component::Component(const std::string& name, const std::string& value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, const std::string& value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);
 }
 ////////////
-Component::Component(const std::string& name, const String& value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, const String& value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);
 }
 ////////////
-Component::Component(const std::string& name, const Vector2& value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, const Vector2& value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);	
 }
 ////////////
-Component::Component(const std::string& name, const Vector3& value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, const Vector3& value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);	
 }
 ////////////
-Component::Component(const std::string& name, const Vector4& value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, const Vector4& value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);
 }
 ////////////
-Component::Component(const std::string& name, const void * value) : number(-1), boolean_(-1), pointer(nullptr), vector(-1, -1, -1, -1)
+Component::Component(const std::string& name, const void * value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);
 }
 ////////////
-Component::Component(const std::string& name, lua_CFunction value)
+Component::Component(const std::string& name, lua_CFunction value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);
 	set_value(value);	
 }
 ////////////
-Component::Component(const std::string& name, std::function<void (void)> value)
+Component::Component(const std::string& name, std::function<void (void)> value) : Component()
 {
 	Factory::get_component_factory()->store(this);
 	set_name(name);

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef COMPONENT_HPP_DOKUN // can be set to an entity as a part of a piece of data
 #define COMPONENT_HPP_DOKUN	
 
@@ -10,9 +12,13 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#if defined(__cplusplus) && (__cplusplus >= 201703L)
+#include <any> // std::any (C++17)
+#endif
+#include <type_traits> // decltype
 #include <lua.hpp>
 
-struct Component // a part or attribute of an entity; This class is essential if you want to add custom class members
+/*union*/struct Component // a part or attribute of an entity; This class is essential if you want to add custom class members
 {
 	Component();
 	Component(const std::string& name);
@@ -57,7 +63,148 @@ struct Component // a part or attribute of an entity; This class is essential if
 	private:
 	void set_type(int type);                   static int set_type(lua_State *L);
     public:	
+    // setters
+    template<typename V> void set(V val) {
+        if (std::is_same<V, bool>::value) {
+            this->boolean_ = val;
+        }    
+        if ((std::is_same<V, double>::value) || (std::is_same<V, float>::value) || (std::is_same<V, int>::value)) {
+            this->number = val;
+        }        
+        // std::string will not work with "typename V". This will cause an error (works for integers only)
+        //if (std::is_same<V, std::string>::value) {}
+
+        /*if (std::is_same<V, ?>::value) { 
+            std::cout << "V is a \n";
+        }*/    
+    }	    
+    template<typename V> void set(const std::string& val) {
+        if((std::is_same<V, std::string>::value) || (std::is_same<V, String>::value)) { 
+            this->string = val;
+        } 
+    }
+    template<typename V> void set(void * val) {
+        if (std::is_same<V, void *>::value) { 
+            this->pointer = val;
+        }
+    }
+    template<typename V> void set(const Vector4& val) {
+        if (std::is_same<V, Vector4>::value) { 
+            this->vector = val;
+        }
+    }
+    template<typename V> void set(lua_CFunction val) {
+        if (std::is_same<V, lua_CFunction>::value) { 
+            this->lua_function = val;
+        }    
+    }
+    template<typename V> void set(std::function<void (void)> val) {
+        if (std::is_same<V, std::function<void (void)>>::value) { 
+            this->function = val;
+        }   
+    }
+    // todo: set(std::function) {}
+    //-------------------------------
 	// getters
+    //#if defined(__cplusplus) && (__cplusplus < 201703L)
+    template<typename T> T get() {
+        if (std::is_same<T, bool>::value) {
+            std::cout << "T is a boolean GET\n";
+            //return this->boolean_;
+        }    
+        if ((std::is_same<T, double>::value) || (std::is_same<T, float>::value) || (std::is_same<T, int>::value)) {
+            std::cout << "T is a number GET\n";
+            //return this->number;
+        }   
+        // std::string will not work with "typename V". This will cause an error (works for integers only)
+        //if(std::is_class<T>::value) {
+        /*if (std::is_same<T, std::string>::value) { 
+            std::cout << "T is an string GET\n";
+            return this->string.str(); // doesn't work :/
+        }*/
+        //}
+        /*if (std::is_same<T, ?>::value) { 
+            std::cout << "T is a \n";
+        }*/    
+        //return t;
+        /*
+        	double number; // int, float, double, etc.
+	String string; // std::string or const char *
+	int boolean_;   // bool
+	void * pointer; // void *, SomeClass *
+	Vector4 vector; // Vector2, Vector3, Vector4
+	std::function<void (void)> function; // void (*f)()
+	lua_CFunction lua_function;
+        */
+    }	
+    /*template<typename T> std::string get(bool is_string) {    
+        if((std::is_same<T, std::string>::value) || (std::is_same<T, String>::value)) { 
+            return this->string.str();
+        }
+    }*/           
+    //-------------------------------
+    /*// Works but only with C++17 :(
+    template<typename T> T get() {  
+        // if constexpr is a C++17 feature :/  
+        if constexpr ((std::is_same<T, std::string>::value) || (std::is_same<T, String>::value)) { 
+            return this->string.str();
+        }    
+        if constexpr (std::is_same<T, bool>::value) {
+            std::cout << "T is a boolean GET\n";
+            return this->boolean_;
+        }    
+        if constexpr ((std::is_same<T, double>::value) || (std::is_same<T, float>::value) || (std::is_same<T, int>::value)) {
+            std::cout << "T is a number GET\n";
+            return this->number;
+        }            
+    }*/	 
+    //-------------------------------
+    template<class T> T get_class() { // there's no difference between class and typename
+        if((std::is_same<T, std::string>::value) || (std::is_same<T, String>::value)) { 
+            return this->string.str();
+        } 
+        /*if (std::is_same<T, ?>::value) { 
+            std::cout << "T is a \n";
+        }*/    
+        //return t;
+    }	    
+    //#endif
+    /*#if defined(__cplusplus) && (__cplusplus >= 201703L)	
+    template<typename T>
+    std::any get() {
+        if (std::is_same<T, bool>::value) {
+            std::cout << "T is a boolean GET\n";
+            std::any return_boolean = this->boolean_;
+            return return_boolean;
+        }    
+        if ((std::is_same<T, double>::value) || (std::is_same<T, float>::value) || (std::is_same<T, int>::value)) {
+            std::cout << "T is a number GET\n";
+            std::any return_number = this->number;
+            return return_number;
+        }        
+        if (std::is_same<T, std::string>::value) { 
+            std::cout << "T is an string GET\n";
+            std::any return_str = this->string.str();
+            //return std::any_cast<std::string>(return_str);//this->string.str(); // doesn't work :/
+        }
+    }		
+    #endif*/
+    /* Usage:
+    Component * component = new Component();
+    
+    component->set_name("age");
+    component->set<int>(14);
+    std::cout << "age: " << component->get<int>() << std::endl;
+    
+    component->set_name("name");
+    component->set<std::string>("Sid");
+    std::cout << "name: " << component->get_class<std::string>() << std::endl;
+    
+    component->set_name("function");
+    auto some_void_function = []() { return; };
+    component->set<std::function<void (void)>>(some_void_function);  
+    //std::cout << "name: " << component->get_class<std::string>() << std::endl;  
+    */    
 	int get_type()  const;                     static int get_type(lua_State *L); // get data type              
 	void * get_value();                        static int get_value(lua_State *L);
 	// other getters
@@ -136,7 +283,7 @@ struct Component // a part or attribute of an entity; This class is essential if
 		}
 		if(component.get_type() == 5)
 		{
-			os << &component.function;
+			os << &component.function;//
 		}
 		return (os);	
 	}	
@@ -146,6 +293,7 @@ struct Component // a part or attribute of an entity; This class is essential if
 	std::string name;
 	int type;
 	//////////////
+	//union value {
 	double number; // int, float, double, etc.
 	String string; // std::string or const char *
 	int boolean_;   // bool
@@ -153,6 +301,7 @@ struct Component // a part or attribute of an entity; This class is essential if
 	Vector4 vector; // Vector2, Vector3, Vector4
 	std::function<void (void)> function; // void (*f)()
 	lua_CFunction lua_function;
+	//};
 	//////////////
 };
 /*

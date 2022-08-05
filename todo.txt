@@ -1,10 +1,11 @@
 [HIGH PRIORITY]
-- build external libraries statically to speed up compile time and prevent recompilation of external source files
+- build external libraries statically to speed up compile time and to prevent recompilation of external source files
 - review, correct and optimize rendering code in renderer.hpp/renderer.cpp
 - reduce the file size (renderer.cpp/.hpp) and remove any unneccessary functions and comments
 - integrate Vulkan into dokun-ui
 - create a scrollbar and scrollarea
 - create something similar to QML where C++ loads the instructions on creating the GUI from the Lua script and draws the GUI (See https://doc.qt.io/qt-6/qmlapplications.html).
+- keep dokun-ui at a minumum C++ version of 11 for backwards compatibility with older compilers (it's a library after all and not an executable)
 
 [MID PRIORITY]
 - port dokun-ui to Android (where OpenGL ES will be used. See https://developer.android.com/guide/topics/graphics/opengl)
