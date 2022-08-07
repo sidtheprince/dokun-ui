@@ -7,7 +7,7 @@ sudo apt install build-essential cmake git libx11-dev libgl1-mesa-dev libglu1-me
 
 
 # Building dokun-ui
-**To build dokun-ui as a library (libdokun-ui):**
+**To build dokun-ui as a library:**
 ```bash
 git clone https://github.com/sidtheprince/dokun-ui.git
 cd dokun-ui
