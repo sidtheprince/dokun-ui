@@ -8,7 +8,7 @@
 - keep dokun-ui at a minumum C++ version of 11 for backwards compatibility with older compilers (it's a library after all and not an executable)
 
 [MID PRIORITY]
-- port dokun-ui to Android (where OpenGL ES will be used. See https://developer.android.com/guide/topics/graphics/opengl)
+- port dokun-ui to Android (where OpenGL ES or Vulkan will be used. See https://developer.android.com/guide/topics/graphics/opengl)
 
 [LOW PRIORITY]
 - precompile Lua script using the luac compiler to protect the script from plagiarism and rename the format from ".lua" to ".dlml" (meaning Dokun Lua Markup Language)

@@ -71,7 +71,7 @@ add_definitions(-DLUA_USE_POSIX  )
 endif()
 
 #############
-# window + screen
+# windowing system
 set(win32_src)
 set(x11_src     libX11.a libxcb.a libXau.a libXdmcp.a)
 set(wayland_src libwayland-client.so libwayland-server.so libwayland-cursor.so libwayland-egl.so libEGL.so)
@@ -106,7 +106,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 list(APPEND tiff_src external/tiff/libtiff/tif_unix.c )
 list(APPEND jpeg_src external/jpeg/jmemansi.c         )
 endif()
-if(MACOSX)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 list(APPEND jpeg_src external/jpeg/jmemmac.c          )
 endif()
 #############
@@ -210,7 +210,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dependencies
 )
 #############
 # static_library_dir (.a and .lib)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/src) # stored in 'src' since libraries are precompiled sources
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/build) # stored in 'src' since libraries are precompiled sources
 #############
 # output folder - '.a' and '.lib' will go in folder "src"
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
@@ -218,7 +218,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #############
 # core source files
-set(dokun_ui_src src/engine.cpp src/window.cpp src/texture.cpp src/image.cpp src/mouse.cpp src/keyboard.cpp #[[src/audio.cpp src/sound.cpp src/music.cpp src/voice.cpp]] src/font.cpp src/ui.cpp src/box.cpp src/button.cpp src/label.cpp src/edit.cpp src/progressbar.cpp src/slider.cpp src/toggle.cpp src/scrollbar.cpp src/list.cpp src/spinner.cpp src/menubar.cpp src/grid.cpp src/combo.cpp src/tab.cpp #[[src/server.cpp src/client.cpp]] src/entity.cpp src/component.cpp src/timer.cpp src/shader.cpp #[[src/resource.cpp]] #[[src/db.cpp]] src/factory.cpp src/script.cpp src/console.cpp #[[src/video.cpp]] src/plugin.cpp src/file.cpp #[[src/event.cpp]] src/renderer.cpp src/process.cpp src/browser.cpp src/logger.cpp)
+set(dokun_ui_src src/engine.cpp src/window.cpp src/texture.cpp src/image.cpp src/mouse.cpp src/keyboard.cpp #[[src/audio.cpp src/sound.cpp src/music.cpp src/voice.cpp]] src/font.cpp src/ui.cpp src/box.cpp src/button.cpp src/label.cpp src/edit.cpp src/progressbar.cpp src/slider.cpp src/toggle.cpp src/scrollbar.cpp src/list.cpp src/spinner.cpp src/menubar.cpp src/grid.cpp src/combo.cpp src/tab.cpp #[[src/server.cpp src/client.cpp]] src/entity.cpp src/component.cpp src/timer.cpp src/shader.cpp #[[src/resource.cpp]] #[[src/db.cpp]] src/factory.cpp src/script.cpp src/console.cpp #[[src/video.cpp]] src/plugin.cpp src/file.cpp #[[src/event.cpp]] src/renderer.cpp src/browser.cpp src/logger.cpp)
 #############
 # Build tests
 if(DOKUN_BUILD_TESTS) # -DDOKUN_BUILD_TESTS=1
@@ -316,9 +316,9 @@ endif()
 
 #############
 #[[ 
-if(MACOSX)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
-endif (MACOSX)
+endif()
 #############
 if(ANDROID)
 endif(ANDROID)
