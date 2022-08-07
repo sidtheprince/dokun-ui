@@ -34,6 +34,6 @@ cmake -DDOKUN_BUILD_TESTS=0 ..
 ```
 
 [//]: # (git checkout -b dev)
-[//]: # (git add cmake/ external/ include/ src/ test/ CMakeLists.txt README.md todo.txt)
+[//]: # (git add .gitignore cmake/ external/ include/ src/ test/ CMakeLists.txt README.md todo.txt)
 [//]: # (git commit -m"...")
 [//]: # (git push -u origin dev)
