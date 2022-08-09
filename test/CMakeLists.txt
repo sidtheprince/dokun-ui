@@ -36,7 +36,7 @@ include_directories(#[[../external/flac]] # config.h
    ../external/flac/src/libFLAC/include) # for "private/cpu.h"
 include_directories(../external/glm)
 
-link_directories(../src)
+link_directories(../build) # look for libdokun-ui.a in build folder
 
 
 set(test_main "main")

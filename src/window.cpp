@@ -2688,7 +2688,7 @@ int dokun::Window::mouse_leave   (0);
 ////////////
 #ifdef DOKUN_USE_GLFW
 void dokun::Window::glfw_error_callback(int error, const char* description) {
-    std::cout << "\033[1;90m[GLFW]: " << description << " (" << error << ")\033[0m" << std::endl;//fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    std::cout << "\033[1;33m[GLFW]: \033[1;37m" << description << " (" << error << ")\033[0m" << std::endl;//fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 void dokun::Window::glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {

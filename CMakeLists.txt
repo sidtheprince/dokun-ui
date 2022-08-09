@@ -212,10 +212,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dependencies
 # static_library_dir (.a and .lib)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/build) # stored in 'src' since libraries are precompiled sources
 #############
-# output folder - '.a' and '.lib' will go in folder "src"
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/src)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# output folder - '.a' and '.lib' will go in folder "build"
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #############
 # core source files
 set(dokun_ui_src src/engine.cpp src/window.cpp src/texture.cpp src/image.cpp src/mouse.cpp src/keyboard.cpp #[[src/audio.cpp src/sound.cpp src/music.cpp src/voice.cpp]] src/font.cpp src/ui.cpp src/box.cpp src/button.cpp src/label.cpp src/edit.cpp src/progressbar.cpp src/slider.cpp src/toggle.cpp src/scrollbar.cpp src/list.cpp src/spinner.cpp src/menubar.cpp src/grid.cpp src/combo.cpp src/tab.cpp #[[src/server.cpp src/client.cpp]] src/entity.cpp src/component.cpp src/timer.cpp src/shader.cpp #[[src/resource.cpp]] #[[src/db.cpp]] src/factory.cpp src/script.cpp src/console.cpp #[[src/video.cpp]] src/plugin.cpp src/file.cpp #[[src/event.cpp]] src/renderer.cpp src/browser.cpp src/logger.cpp)

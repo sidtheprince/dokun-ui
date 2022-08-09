@@ -58,7 +58,7 @@ int main() {
 	    // Draw here ...
 	    label->draw();
 	
-		window.update();      
+		window.update();
 		window.poll_events();
 		check_error();
 	}
