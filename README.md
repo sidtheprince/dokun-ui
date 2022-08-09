@@ -14,7 +14,7 @@ cd dokun-ui
 
 mkdir build && cd build
 cmake ..
-make
+make libdokun-ui -j4 && make main -j4
 ```
 
 **To build the dokun-ui [Lua](https://www.lua.org/) interpreter:**
